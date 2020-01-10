@@ -83,17 +83,16 @@ model.cuda(Args.device_id)
 
 for iteration, data in enumerate(dataloader_valid):
     count = 0 
-    for encr in range(0,10): # here we repeat each reconstruction to compensate the effect of randomness of the VAE.
-        logp, mu, logv, z,prediction = model(to_var(data['input'], Args.device_id,gpu_exist = Args.gpu_exist),
+    
+    logp, mu, logv, z,prediction = model(to_var(data['input'], Args.device_id,gpu_exist = Args.gpu_exist),
                                           to_var(data['length'],Args.device_id,gpu_exist = Args.gpu_exist))
-        for decr in range(0,10):
-            sample = model.inference(z)
-            reconst = [ind2char[i] for i in sample]
-            reconst = decode(''.join(reconst[0:data['length'].item()-1]))
-            GT = decode(data_valid_['SMILES'][iteration])[1:-1]
-            if reconst == GT:
-                count += 1
-        true_ratio = count/100
-        result.append(true_ratio)
-        print("epoch %i, sample %i/%i, result %4.3f, true_ratio %4.3f" %(epoch, iteration, len(data_test_['SMILES']), np.mean(np.asarray(result)), true_ratio))
-            reconstruction[i,iteration] = true_ratio
+    for i in range(10):
+        Rand_sample = to_var(torch.normal(mean=torch.zeros([1,  Args.latent_size]), std=0.01*torch.ones([1,  Args.latent_size])),
+                                                 Args.device_id,gpu_exist=True)
+        z_new = z+Rand_sample
+        reconst = model.inference(z_new.cuda(Args.device_id))
+        reconst = [ind2char[i] for i in reconst]
+        reconst = decode(''.join(reconst))[0:-1]
+    
+    if iteration > 0:
+        break
