@@ -21,3 +21,6 @@ Official implementation of our paper in molecular design https://chemrxiv.org/ar
 - In order to gnerate new molecules, we feed a SMILES structure encode them to the latent vector, then we perturbate the latent vector and decode them.
 - To execute: molecule_generation.py or molecule_generation.ipynb
 
+# Contact
+For any inquiry contact sadegh.mohammadi@bayer.com
+(mailto:sadegh.mohammadi@bayer.com?subject=[GitHub]%20Source%20Han%20Sans)
