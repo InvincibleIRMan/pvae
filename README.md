@@ -18,4 +18,6 @@ Official implementation of our paper in molecular design https://chemrxiv.org/ar
 
 
 # Molecule generation (latent space sampling)
+- In order to gnerate new molecules, we feed a SMILES structure encode them to the latent vector, then we perturbate the latent vector and decode them.
+- To execute: molecule_generation.py or molecule_generation.ipynb
 
