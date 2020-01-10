@@ -23,4 +23,4 @@ Official implementation of our paper in molecular design https://chemrxiv.org/ar
 
 # Contact
 For any inquiry contact sadegh.mohammadi@bayer.com
-(mailto:sadegh.mohammadi@bayer.com?subject=[GitHub]%20Source%20Han%20Sans)
+
