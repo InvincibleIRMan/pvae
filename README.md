@@ -12,5 +12,10 @@ Official implementation of our paper in molecular design https://chemrxiv.org/ar
 - For the training we used the ZINC dataset
 
 # Training:
-The pre-trained model on ZINC dataset is available. However, if you are willing to train the model from scratch train_pure_smiles/ should be executed.
+- The pre-trained model on ZINC dataset is available at model/pre_trained. 
+- if you are willing to train the model from scratch train_pure_smiles.py should be executed.
+- To change parameters, please visit param.py
+
+
+# Molecule generation (latent space sampling)
 
