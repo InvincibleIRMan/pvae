@@ -54,11 +54,12 @@ class SentenceVAE(nn.Module):
         self.bidirectional = bidirectional
         self.num_layers = num_layers
         self.hidden_size = hidden_size
-        self.prediction = nn.Linear(latent_size,nr_classes)
+        
 
         self.embedding = nn.Embedding(vocab_size, embedding_size)
         self.word_dropout = nn.Dropout(p=word_dropout)
-
+        self.prediction = nn.Linear(latent_size,nr_classes)
+        
         if rnn_type == 'rnn':
             rnn = nn.RNN
         elif rnn_type == 'gru':
@@ -118,7 +119,7 @@ class SentenceVAE(nn.Module):
         # decoder input
         input_embedding = self.word_dropout(input_embedding)
         packed_input = rnn_utils.pack_padded_sequence(input_embedding, sorted_lengths.data.tolist(), batch_first=True)
-
+       
         # decoder forward pass
         outputs, _ = self.decoder_rnn(packed_input, hidden)
 
@@ -133,10 +134,10 @@ class SentenceVAE(nn.Module):
         logp = nn.functional.log_softmax(self.outputs2vocab(padded_outputs.view(-1, padded_outputs.size(2))), dim=-1)
         logp = logp.view(b, s, self.embedding.num_embeddings)
         z = z[reversed_idx]
-        prediction = self.prediction(z)
+        
         mean = mean[reversed_idx] 
         logv = logv[reversed_idx] 
-        #prediction = torch.tanh(prediction)
+        prediction = 0
         return logp, mean, logv, z, prediction
     def inference(self, z=None):
         pad_idx = 0
@@ -152,8 +153,8 @@ class SentenceVAE(nn.Module):
         while (t < self.max_sequence_length and input_sequence != eos_idx):
             #hidden = hidden.unsqueeze(0)
             if t == 0:
-                #input_sequence = to_var(torch.Tensor(batch_size).fill_(sos_idx).long(), self.device_id,self.gpu_exist)
-                input_sequence = torch.Tensor(batch_size).fill_(sos_idx).long()
+                input_sequence = to_var(torch.Tensor(batch_size).fill_(sos_idx).long(), self.device_id,self.gpu_exist)
+                #input_sequence = torch.Tensor(batch_size).fill_(sos_idx).long()
             #print(input_sequence.shape)
             input_sequence = input_sequence.unsqueeze(1)
             

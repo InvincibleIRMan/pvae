@@ -95,8 +95,8 @@ for epoch in range(0, Args.epochs):
         batch_size = batch['input'].size(0)
         model.train()
         ######     Forward pass  ######
-        logp, mean, logv, z,prediction = model(batch['input'], batch['length'])
-        prediction = prediction.squeeze()
+        logp, mean, logv, z,pr = model(batch['input'], batch['length'])
+       
        
         NLL_loss, KL_loss, KL_weight = loss_fn(NLL,logp, batch['target'],batch['length'], mean, logv, Args.anneal_function, step, Args.k0,Args.x0)
         loss = (NLL_loss + KL_weight * KL_loss )/batch_size
